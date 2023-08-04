@@ -9,8 +9,8 @@ const getSelector = (element) => {
     case `Flying To Airport Input Box`: return `input[name="Destination1"]`;
     case `Flying To Airport Option`: return `.airport-name.ellipsis`;
     case `Departure Date`: return `[name="DepartureDate1"]`;
+    case `Calendar Date`: return `.calendar-flight-price`;
     case `Find Flights Button`: return `[class="input-holder buttons"] button[type="submit"]`;
-    case `Flexible Dates`: return `[class = "LinkUI__Link-bREbZJ BPjDb"]`;
   }
 };
 
