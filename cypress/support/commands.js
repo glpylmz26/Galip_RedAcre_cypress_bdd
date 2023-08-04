@@ -25,6 +25,21 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+Cypress.Commands.add("goToUrl",(page)=>{
+    try{
+        const baseUrl = `https://airmalta.com`;
+        switch (page){
+            // Every page/URL can added in this method
+            case(`Home Page`): return cy.visit(`${baseUrl}/`);
+            default:
+                throw new Error(`${BasePage.name}.${this.goToPageUrl.name}: page ("${page}") was not configured`);
+        }
+    }
+    catch(error){
+        throw new Error(`${BasePage.name}.${this.goToPageUrl.name}: ${error.message}`);
+    }
+})
+
 Cypress.Commands.add("getCurrentPage", () => {
   try {
     cy.url().then((url) => {
@@ -49,17 +64,10 @@ Cypress.Commands.add("clickElement", (selector, text) => {
   }
 });
 
-Cypress.Commands.add("goToUrl",(page)=>{
-    try{
-        const baseUrl = `https://airmalta.com`;
-        switch (page){
-            // Every page/URL can added in this method
-            case(`Home Page`): return cy.visit(`${baseUrl}/`);
-            default:
-                throw new Error(`${BasePage.name}.${this.goToPageUrl.name}: page ("${page}") was not configured`);
-        }
-    }
-    catch(error){
-        throw new Error(`${BasePage.name}.${this.goToPageUrl.name}: ${error.message}`);
-    }
-})
+Cypress.Commands.add("setElementValue", (selector, text) => {
+  try {
+    cy.get(selector).type(text);
+  } catch (error) {
+    throw new Error(`Error in clickElement custom command: ${error.message}`);
+  }
+});
