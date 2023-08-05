@@ -45,13 +45,14 @@ Cypress.Commands.add("goToUrl", (page) => {
 });
 
 Cypress.Commands.add("getCurrentPage", () => {
+  cy.wait(2000)
   try {
+    cy.log(cy.url())
     cy.url().then((url) => {
       let page = url.split(`.com/`).pop();
       return page;
     });
   } catch (error) {
-    // throw `${BasePage.name}.${this.getCurrentPage.name}: ${error.message}`;
     throw new Error(`Error in getCurrentPage custom command: ${error.message}`);
   }
 });
@@ -80,6 +81,32 @@ Cypress.Commands.add("clickFirstElement", (selector, text) => {
   }
 });
 
+Cypress.Commands.add("getElementsWithText", (selector, text) => {
+  cy.get(selector)
+    .then(($elements) => {
+      const elementsWithText = $elements.filter((index, element) => {
+        return Cypress.$(element).text().includes(text);
+      });
+
+
+      return cy.wrap(elementsWithText);
+    });
+});
+
+Cypress.Commands.add("clickPositionNElement", (selector, position, text) => {
+  let Elements = cy.getElementsWithText(selector, text);
+  if (position == "first") {
+    cy.log("first");
+    Elements.first().click();
+  } else if (position == "last") {
+    cy.log("last");
+    Elements.last().click();
+  } else {
+    let index = parseInt(position,10)-1;
+    Elements.eq(index).click();
+  }
+});
+
 Cypress.Commands.add("setElementValue", (selector, text) => {
   try {
     cy.get(selector).type(text);
@@ -104,14 +131,25 @@ Cypress.Commands.add("isElementState", (selector, state) => {
   }
 });
 
-Cypress.Commands.add("checkElementExistence", (selector) => {
-  return cy.get(selector, { timeout: 3000 }).then(($el) => {
-    if ($el.length > 0) {
-      // Element is found, resolve with the element
-      return $el;
-    } else {
-      // Element is not found, resolve with null
-      return null;
-    }
-  });
+Cypress.Commands.add("isFirstElementState", (selector, state) => {
+  const stateMethod = state.split(`Not `).pop();
+  switch (stateMethod) {
+    case `Clickable`:
+      return cy.get(selector).first().should("be.visible").and("be.enabled");
+    case `Displayed`:
+      return cy.get(selector).first().should("be.visible");
+    case `Enabled`:
+      return cy.get(selector).first().should("be.enabled");
+    case `Existing`:
+      return cy.get(selector).first().should("exist");
+    default:
+      throw new Error(`State ("${state}") was not configured`);
+  }
+});
+
+Cypress.Commands.add("getElementText", (selector) => {
+  cy.get(selector).then(($element)=>{
+    let elementText = $element.text();
+    cy.log(elementText);
+  })
 });
