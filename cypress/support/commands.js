@@ -1,3 +1,4 @@
+import "cypress-wait-until";
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -45,9 +46,8 @@ Cypress.Commands.add("goToUrl", (page) => {
 });
 
 Cypress.Commands.add("getCurrentPage", () => {
-  cy.wait(2000)
+  cy.waitUntil(() => cy.url().should("not.include", "deeplink"));
   try {
-    cy.log(cy.url())
     cy.url().then((url) => {
       let page = url.split(`.com/`).pop();
       return page;
@@ -82,29 +82,29 @@ Cypress.Commands.add("clickFirstElement", (selector, text) => {
 });
 
 Cypress.Commands.add("getElementsWithText", (selector, text) => {
-  cy.get(selector)
-    .then(($elements) => {
-      const elementsWithText = $elements.filter((index, element) => {
-        return Cypress.$(element).text().includes(text);
-      });
-
-
-      return cy.wrap(elementsWithText);
+  cy.get(selector).then(($elements) => {
+    const elementsWithText = $elements.filter((index, element) => {
+      return Cypress.$(element).text().includes(text);
     });
+    return elementsWithText;
+  });
 });
 
 Cypress.Commands.add("clickPositionNElement", (selector, position, text) => {
-  let Elements = cy.getElementsWithText(selector, text);
-  if (position == "first") {
-    cy.log("first");
-    Elements.first().click();
-  } else if (position == "last") {
-    cy.log("last");
-    Elements.last().click();
-  } else {
-    let index = parseInt(position,10)-1;
+  cy.getElementsWithText(selector, text).then((Elements) => {
+    let index;
+    if (position == "first") {
+      index = 0;
+    } else if (position == "last") {
+      index = Elements.length - 1;
+    } else {
+      if (isNaN(position)) {
+        throw new Error(`"Position" must be a number`);
+      }
+      index = parseInt(position, 10) - 1;
+    }
     Elements.eq(index).click();
-  }
+  });
 });
 
 Cypress.Commands.add("setElementValue", (selector, text) => {
@@ -148,8 +148,8 @@ Cypress.Commands.add("isFirstElementState", (selector, state) => {
 });
 
 Cypress.Commands.add("getElementText", (selector) => {
-  cy.get(selector).then(($element)=>{
-    let elementText = $element.text();
+  cy.get(selector).then(($element) => {
+    let elementText = $element.first().text().trim();
     cy.log(elementText);
-  })
+  });
 });
