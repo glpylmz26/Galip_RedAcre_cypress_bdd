@@ -28,19 +28,18 @@ import "cypress-wait-until";
 
 Cypress.Commands.add("goToUrl", (page) => {
   try {
-    const baseUrl = `https://airmalta.com`;
     switch (page) {
       // Every page/URL can added in this method
       case `Home Page`:
-        return cy.visit(`${baseUrl}/`);
+        return cy.visit(`/`);
       default:
         throw new Error(
-          `${BasePage.name}.${this.goToPageUrl.name}: page ("${page}") was not configured`
+          `Error in goToUrl custom command with navigation to ${page}: ${error.message} `
         );
     }
   } catch (error) {
     throw new Error(
-      `${BasePage.name}.${this.goToPageUrl.name}: ${error.message}`
+      `Error in goToUrl custom command: ${error.message}`
     );
   }
 });
@@ -93,17 +92,21 @@ Cypress.Commands.add("getElementsWithText", (selector, text) => {
 Cypress.Commands.add("clickPositionNElement", (selector, position, text) => {
   cy.getElementsWithText(selector, text).then((Elements) => {
     let index;
-    if (position == "first") {
+    if (position.toLowerCase() == "first") {
       index = 0;
-    } else if (position == "last") {
+    } else if (position.toLowerCase() == "last") {
       index = Elements.length - 1;
     } else {
       if (isNaN(position)) {
-        throw new Error(`"Position" must be a number`);
+        throw new Error(
+          `"Position" : "${position}" must be first/last or a number`
+        );
       }
       index = parseInt(position, 10) - 1;
     }
-    Elements.eq(index).click();
+    cy.wrap(Elements.eq(index)).should('be.visible').then((element) => {
+      element[0].click();
+    });
   });
 });
 
@@ -147,9 +150,26 @@ Cypress.Commands.add("isFirstElementState", (selector, state) => {
   }
 });
 
-Cypress.Commands.add("getElementText", (selector) => {
-  cy.get(selector).then(($element) => {
-    let elementText = $element.first().text().trim();
-    cy.log(elementText);
+Cypress.Commands.add("getPositionNElementText", (selector, position) => {
+  cy.get(selector).then(($elements) => {
+    let index;
+    if (position.toLowerCase() == "first") {
+      index = 0;
+    } else if (position.toLowerCase() == "last") {
+      index = $elements.length - 1;
+    } else {
+      if (isNaN(position)) {
+        throw new Error(
+          `"Position" : "${position}" must be first/last or a number`
+        );
+      }
+      index = parseInt(position, 10) - 1;
+    }
+    cy.wrap($elements.eq(index))
+      .should("be.visible")
+      .invoke("text")
+      .then((elementText) => {
+        cy.log(elementText.trim());
+      });
   });
 });

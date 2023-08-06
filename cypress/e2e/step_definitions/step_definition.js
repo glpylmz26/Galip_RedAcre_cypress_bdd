@@ -55,7 +55,6 @@ Then("the first available {string} is {string}", (element, state) => {
     cy.isFirstElementState(pages[currentPage].getSelector(element), state);
   });
   cy.getCurrentPage().then((currentPage) => {
-    cy.getElementText(pages[currentPage].getSelector(element));
+    cy.getPositionNElementText(pages[currentPage].getSelector(element),"First");
   });
-
 });

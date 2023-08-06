@@ -22,7 +22,7 @@ async function setupNodeEvents(on, config) {
 
 module.exports = defineConfig({
   e2e: {
-    // baseUrl: 'https://reqres.in/api',
+    baseUrl: 'https://airmalta.com',
     setupNodeEvents,
     specPattern: "cypress/e2e/features/*.feature",
     supportFile: "cypress/support/e2e.js",

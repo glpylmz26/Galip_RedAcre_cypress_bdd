@@ -12,6 +12,6 @@ Feature: User can search a ticket
         And I set the "Flying To Airport Input Box" to "Malta International Airport"
         And I click the "Flying To Airport Option" when it is "Malta International Airport"
         And I click the "Departure Date"
-        And I click "Calendar Date" at position "first" When it starts with text "€"
+        And I click "Calendar Date" at position "First" When it starts with text "€"
         And I click the "Find Flights Button"
         Then the first available "Flight Price" is "Displayed"
