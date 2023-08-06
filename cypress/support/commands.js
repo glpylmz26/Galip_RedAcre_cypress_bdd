@@ -93,13 +93,13 @@ Cypress.Commands.add("getElementsWithText", (selector, text) => {
 Cypress.Commands.add("clickPositionNElement", (selector, position, text) => {
   cy.getElementsWithText(selector, text).then((Elements) => {
     let index;
-    if (position == "first") {
+    if (position.toLowerCase() == "first") {
       index = 0;
-    } else if (position == "last") {
+    } else if (position.toLowerCase() == "last") {
       index = Elements.length - 1;
     } else {
       if (isNaN(position)) {
-        throw new Error(`"Position" must be a number`);
+        throw new Error(`"Position" : "${position}" must be first/last or a number`);
       }
       index = parseInt(position, 10) - 1;
     }
