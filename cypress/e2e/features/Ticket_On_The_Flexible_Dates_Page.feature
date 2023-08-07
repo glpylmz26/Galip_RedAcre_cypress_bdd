@@ -2,7 +2,7 @@ Feature: User can search a ticket
 
     Scenario: User can choose first available ticket
         Given I navigate the "Home Page" URL
-        When I click the "Accpet Cookies"
+        When I click the "Accept Cookies"
         And I click the "Round Trip Dropdown"
         And I click the "Round Trip" when it is "One way"
         And I click the "Departing From"
@@ -12,6 +12,7 @@ Feature: User can search a ticket
         And I set the "Flying To Airport Input Box" to "Malta International Airport"
         And I click the "Flying To Airport Option" when it is "Malta International Airport"
         And I click the "Departure Date"
-        And I click "Calendar Date" at position "First" When it starts with text "€"
+        And I click "Calendar Date" at position "First"
         And I click the "Find Flights Button"
+        And I click the "Flexible Dates"
         Then the first available "Flight Price" is "Displayed"
