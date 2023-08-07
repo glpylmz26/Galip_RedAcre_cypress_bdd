@@ -23,10 +23,10 @@ When("I click the {string} when it is {string}", (element, text) => {
 });
 
 When(
-  "I click the first available {string} When it starts with text {string}",
-  (element, text) => {
+  "I click {string} at position {string}",
+  (element, position) => {
     cy.getCurrentPage().then((currentPage) => {
-      cy.clickFirstElement(pages[currentPage].getSelector(element), text);
+      cy.clickPositionNElement(pages[currentPage].getSelector(element),position);
     });
   }
 );
