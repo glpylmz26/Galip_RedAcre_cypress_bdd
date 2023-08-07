@@ -68,13 +68,6 @@ Cypress.Commands.add("clickElement", (selector, text) => {
   }
 });
 
-// Cypress.Commands.add("clickFirstElement", (selector) => {
-//   try {
-//       cy.get(selector).first().click();
-//   } catch (error) {
-//     throw new Error(`Error in clickElement custom command: ${error.message}`);
-//   }
-// });
 
 Cypress.Commands.add("getElementsWithText", (selector, text) => {
   if(text){
@@ -86,7 +79,6 @@ Cypress.Commands.add("getElementsWithText", (selector, text) => {
     });
   }else{
     cy.get(selector).then(($elements) => {
-      
       return $elements;
     });
   }

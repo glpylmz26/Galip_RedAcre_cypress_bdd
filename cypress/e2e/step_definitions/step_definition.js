@@ -1,15 +1,18 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import HomePage from "../pages/homePage.page.js";
 import FlightOneWay from "../pages/flightOneWay.page.js";
+import FlexibleDates from "../pages/flexibleDates.page.js";
 
 const pages = {
   en: HomePage,
   "flights/oneway": FlightOneWay,
+  "calendar/oneway": FlexibleDates,
 };
 
 Given("I navigate the {string} URL", (element) => {
   cy.goToUrl(element);
 });
+
 When("I click the {string}", (element) => {
   cy.getCurrentPage().then((currentPage) => {
     cy.clickElement(pages[currentPage].getSelector(element));

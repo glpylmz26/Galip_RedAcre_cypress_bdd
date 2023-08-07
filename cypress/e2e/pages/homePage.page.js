@@ -1,6 +1,6 @@
 const getSelector = (element) => {
   switch (element) {
-    case `Accpet Cookies`: return `#onetrust-accept-btn-handler`;
+    case `Accept Cookies`: return `#onetrust-accept-btn-handler`;
     case `Round Trip Dropdown`: return `[class="form-control"][title="Round trip"]`;
     case `Departing From`: return `.route-selection-origin .input-holder.airport-selection `;
     case `Departing From Airport Input Box`: return `input.form-control.airport-search-input`;
