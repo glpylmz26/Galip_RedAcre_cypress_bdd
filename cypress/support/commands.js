@@ -67,26 +67,29 @@ Cypress.Commands.add("clickElement", (selector, text) => {
     throw new Error(`Error in clickElement custom command: ${error.message}`);
   }
 });
-Cypress.Commands.add("clickFirstElement", (selector, text) => {
-  try {
-    if (text) {
-      const regex = new RegExp(`^${text}\\w+`);
-      cy.contains(selector, regex).first().click();
-    } else {
-      cy.get(selector).first().click();
-    }
-  } catch (error) {
-    throw new Error(`Error in clickElement custom command: ${error.message}`);
-  }
-});
+
+// Cypress.Commands.add("clickFirstElement", (selector) => {
+//   try {
+//       cy.get(selector).first().click();
+//   } catch (error) {
+//     throw new Error(`Error in clickElement custom command: ${error.message}`);
+//   }
+// });
 
 Cypress.Commands.add("getElementsWithText", (selector, text) => {
-  cy.get(selector).then(($elements) => {
-    const elementsWithText = $elements.filter((index, element) => {
-      return Cypress.$(element).text().includes(text);
+  if(text){
+    cy.get(selector).then(($elements) => {
+      const elementsWithText = $elements.filter((index, element) => {
+        return Cypress.$(element).text().includes(text);
+      });
+      return elementsWithText;
     });
-    return elementsWithText;
-  });
+  }else{
+    cy.get(selector).then(($elements) => {
+      
+      return $elements;
+    });
+  }
 });
 
 Cypress.Commands.add("clickPositionNElement", (selector, position, text) => {
